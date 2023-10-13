@@ -16,13 +16,12 @@ const updateProperties = (key: string, value: any) => {
     <h2>{{ selectedElement.value.type }} Properties</h2>
 
     <!-- Text Properties -->
-    <!-- Text Properties -->
     <div v-if="selectedElement.type === 'Text'">
       <label>
         Value:
         <textarea
           :value="selectedElement.defaultProperties.value"
-          @input="updateProperties('value', $event.target?.value)"
+          @input="updateProperties('value', ($event.target as HTMLInputElement)?.value)"
         ></textarea>
       </label>
       <label>
@@ -30,7 +29,7 @@ const updateProperties = (key: string, value: any) => {
         <input
           type="number"
           :value="parseInt(selectedElement.defaultProperties.fontSize)"
-          @input="updateProperties('fontSize', `${$event.target?.value}px`)"
+          @input="updateProperties('fontSize', `${($event.target as HTMLInputElement)?.value}px`)"
         />
       </label>
     </div>
@@ -40,14 +39,14 @@ const updateProperties = (key: string, value: any) => {
         Text:
         <input
           :value="selectedElement.value.defaultProperties.text"
-          @input="updateProperties('text', $event.target?.value)"
+          @input="updateProperties('text', ($event.target as HTMLInputElement)?.value)"
         />
       </label>
       <label>
         Action:
         <select
           :value="selectedElement.value.defaultProperties.action"
-          @input="updateProperties('action', $event.target?.value)"
+          @input="updateProperties('action', ($event.target as HTMLInputElement)?.value)"
         >
           <option>None</option>
           <option>Redirect to Next Page</option>
@@ -61,7 +60,7 @@ const updateProperties = (key: string, value: any) => {
         Placeholder:
         <input
           :value="selectedElement.value.defaultProperties.placeholder"
-          @input="updateProperties('placeholder', $event.target?.value)"
+          @input="updateProperties('placeholder', ($event.target as HTMLInputElement)?.value)"
         />
       </label>
     </div>
@@ -73,7 +72,9 @@ const updateProperties = (key: string, value: any) => {
         <input
           type="number"
           :value="parseInt(selectedElement.value.defaultProperties.Padding)"
-          @input="updateProperties('innerPadding', `${$event.target?.value}px`)"
+          @input="
+            updateProperties('innerPadding', `${($event.target as HTMLInputElement)?.value}px`)
+          "
         />
       </label>
       <label>
@@ -81,7 +82,9 @@ const updateProperties = (key: string, value: any) => {
         <input
           type="number"
           :value="parseInt(selectedElement.value.defaultProperties.Margin)"
-          @input="updateProperties('outerMargin', `${$event.target?.value}px`)"
+          @input="
+            updateProperties('outerMargin', `${($event.target as HTMLInputElement)?.value}px`)
+          "
         />
       </label>
     </div>
