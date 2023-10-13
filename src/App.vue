@@ -15,6 +15,5 @@ import TopBar from '@/components/TopBar.vue'
         <PageTabs />
       </div>
     </div>
-    <PageTabs />
   </div>
 </template>

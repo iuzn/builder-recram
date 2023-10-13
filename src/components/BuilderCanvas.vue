@@ -53,7 +53,7 @@ function selectElement(element: any) {
 <template>
   <div class="w-full h-full flex items-center justify-center">
     <div
-      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start p-7"
+      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start justify-start p-7 gap-3"
       @drop="drop"
       @dragover="allowDrop"
       id="canvas"
@@ -62,7 +62,7 @@ function selectElement(element: any) {
         v-for="element in store.canvasElements"
         :key="element.type"
         @click="selectElement(element)"
-        class="w-full h-full"
+        class="w-full flex items-center justify-center"
       >
         <!-- Render elements here -->
         <!-- Render elements here -->
@@ -70,13 +70,19 @@ function selectElement(element: any) {
           v-if="element.type === 'Text'"
           :style="{ fontSize: element.defaultProperties.fontSize }"
           :value="element.defaultProperties.text"
-          class="w-full decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
+          class="w-full h-10 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
           :placeholder="element.defaultProperties.placeholder"
+          rows="40"
         />
 
         <button
           v-else-if="element.type === 'Button'"
-          :style="{ fontSize: element.defaultProperties.fontSize }"
+          :style="{
+            fontSize: element.defaultProperties.fontSize,
+            backgroundColor: element.defaultProperties.backgroundColor,
+            color: element.defaultProperties.color
+          }"
+          class="py-2 rounded-md px-4 w-80"
         >
           {{ element.defaultProperties.text }}
         </button>
@@ -91,8 +97,8 @@ function selectElement(element: any) {
           :style="{ fontSize: element.defaultProperties.fontSize }"
           class="flex w-full h-full gap-3 justify-center items-center"
         >
-          <div class="border w-full h-full" @drop="drop" @dragover="allowDrop">a</div>
-          <div class="border w-full h-full" @drop="drop" @dragover="allowDrop">a</div>
+          <div class="border w-full h-full"></div>
+          <div class="border w-full h-full"></div>
         </div>
       </div>
     </div>

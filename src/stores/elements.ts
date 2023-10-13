@@ -28,7 +28,12 @@ export const useElementsStore = defineStore('elements', {
       {
         type: 'Button',
         icon: 'button',
-        defaultProperties: { text: 'Button', fontSize: '16px' }
+        defaultProperties: {
+          text: 'Button',
+          fontSize: '16px',
+          backgroundColor: '#008AFF',
+          color: '#fff'
+        }
       },
       {
         type: 'Input',
