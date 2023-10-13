@@ -1,0 +1,100 @@
+<script setup lang="ts">
+import { useElementsStore } from '@/stores/elements'
+// import { watchEffect } from 'vue'
+
+const store = useElementsStore()
+
+function allowDrop(event: DragEvent) {
+  event.preventDefault()
+  console.log('allowDrop')
+}
+
+function drop(event: DragEvent) {
+  event.preventDefault()
+  const elementData = event.dataTransfer?.getData('application/json')
+  if (elementData) {
+    const element = JSON.parse(elementData)
+    // Pozisyon bilgisi ekleyebilirsiniz
+    element.position = { x: event.clientX, y: event.clientY }
+    store.addElementToCanvas(element)
+    console.log('Element eklendi:', element)
+  }
+}
+
+function selectElement(element: any) {
+  store.selectElement(element)
+  console.log('Element seçildi:', element)
+}
+
+//Page Snapshot
+// function captureCanvas(canvasId: string): string | null {
+//   const canvas = document.getElementById(canvasId) as HTMLCanvasElement
+//   if (!canvas) return null
+//
+//   return canvas.toDataURL('image/png')
+// }
+//
+// function updateCanvas() {
+//   const snapshot = captureCanvas('canvas')
+//   if (snapshot && store.currentPage) {
+//     store.updatePageSnapshot(store.currentPage.name, snapshot)
+//   }
+// }
+//
+//
+// watchEffect(() => {
+//    const elements = store.canvasElements
+//   if (elements.length > 0) {
+//     updateCanvas()
+//   }
+// })
+</script>
+
+<template>
+  <div class="w-full h-full flex items-center justify-center">
+    <div
+      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start p-7"
+      @drop="drop"
+      @dragover="allowDrop"
+      id="canvas"
+    >
+      <div
+        v-for="element in store.canvasElements"
+        :key="element.type"
+        @click="selectElement(element)"
+        class="w-full h-full"
+      >
+        <!-- Render elements here -->
+        <!-- Render elements here -->
+        <textarea
+          v-if="element.type === 'Text'"
+          :style="{ fontSize: element.defaultProperties.fontSize }"
+          :value="element.defaultProperties.text"
+          class="w-full decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
+          :placeholder="element.defaultProperties.placeholder"
+        />
+
+        <button
+          v-else-if="element.type === 'Button'"
+          :style="{ fontSize: element.defaultProperties.fontSize }"
+        >
+          {{ element.defaultProperties.text }}
+        </button>
+        <input
+          v-else-if="element.type === 'Input'"
+          :style="{ fontSize: element.defaultProperties.fontSize }"
+          :value="element.defaultProperties.text"
+          class="w-full decoration-none text-center text-sm"
+        />
+        <div
+          v-else-if="element.type === 'Block'"
+          :style="{ fontSize: element.defaultProperties.fontSize }"
+          class="flex w-full h-full gap-3 justify-center items-center"
+        >
+          <div class="border w-full h-full" @drop="drop" @dragover="allowDrop">a</div>
+          <div class="border w-full h-full" @drop="drop" @dragover="allowDrop">a</div>
+        </div>
+      </div>
+    </div>
+  </div>
+</template>

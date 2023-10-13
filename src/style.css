@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+  font-family: "Urbanist";
+  src: url("/fonts/Urbanist.ttf");
+}
+@layer base {
+body{
+ @apply font-sans;
+}
+}
+@layer components {
+  .base-button {
+    @apply bg-main flex items-center justify-center rounded-md;
+  }
+}
+
