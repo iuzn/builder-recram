@@ -62,7 +62,8 @@ function selectElement(element: any) {
         v-for="element in store.canvasElements"
         :key="element.type"
         @click="selectElement(element)"
-        class="w-full flex items-center justify-center"
+        class="w-full flex items-start justify-center"
+        :class="element.type === 'Block' ? 'h-full' : ''"
       >
         <!-- Render elements here -->
         <!-- Render elements here -->
@@ -70,7 +71,7 @@ function selectElement(element: any) {
           v-if="element.type === 'Text'"
           :style="{ fontSize: element.defaultProperties.fontSize }"
           :value="element.defaultProperties.text"
-          class="w-full h-10 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
+          class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
           :placeholder="element.defaultProperties.placeholder"
           rows="40"
         />
@@ -82,7 +83,7 @@ function selectElement(element: any) {
             backgroundColor: element.defaultProperties.backgroundColor,
             color: element.defaultProperties.color
           }"
-          class="py-2 rounded-md px-4 w-80"
+          class="py-2 rounded-md px-4 w-80 h-10"
         >
           {{ element.defaultProperties.text }}
         </button>
