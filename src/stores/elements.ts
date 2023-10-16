@@ -1,6 +1,8 @@
 import { defineStore } from 'pinia'
+import { v4 as uuidv4 } from 'uuid'
 
 interface Element {
+  id: string
   type: string
   icon: string
   defaultProperties: Record<string, any>
@@ -63,10 +65,12 @@ export const useElementsStore = defineStore('elements', {
       this.currentPage = this.pages.find((page) => page.name === name) || null
     },
     addElementToCanvas(element: Element) {
-      this.canvasElements.push(element)
+      const newElement = { ...element, id: uuidv4() }
+      this.canvasElements.push(newElement)
     },
     selectElement(element: Element | null) {
       this.selectedElement = element
+      console.log('Store selectedElement:', this.selectedElement)
     }
   }
 })

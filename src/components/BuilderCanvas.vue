@@ -23,6 +23,25 @@ function selectElement(element: any) {
   store.selectElement(element)
   console.log('Element seçildi:', element)
 }
+let draggedElement: any = null
+
+function dragStart(index: number) {
+  draggedElement = index
+}
+
+function dragOver(event: DragEvent, index: number) {
+  event.preventDefault()
+  if (draggedElement === null) return
+  if (draggedElement === index) return
+  const temp = store.canvasElements[draggedElement]
+  store.canvasElements[draggedElement] = store.canvasElements[index]
+  store.canvasElements[index] = temp
+  draggedElement = index
+}
+
+function dragEnd() {
+  draggedElement = null
+}
 </script>
 
 <template>
@@ -34,9 +53,13 @@ function selectElement(element: any) {
       id="canvas"
     >
       <div
-        v-for="element in store.canvasElements"
-        :key="element.type"
+        v-for="(element, index) in store.canvasElements"
+        :key="element.id"
         @click="selectElement(element)"
+        @dragstart="dragStart(index)"
+        @dragover="dragOver($event, index)"
+        @dragend="dragEnd"
+        draggable="true"
         class="w-full flex items-start justify-center"
         :class="element.type === 'Block' ? 'h-full' : ''"
       >

@@ -4,7 +4,7 @@ import { useElementsStore } from '@/stores/elements'
 
 const store = useElementsStore()
 const selectedElement = ref(store.selectedElement) as any
-
+console.log('ElementProperties mounted', selectedElement)
 const updateProperties = (key: string, value: any) => {
   if (selectedElement.value) {
     selectedElement.value.defaultProperties[key] = value
