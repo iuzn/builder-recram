@@ -73,7 +73,7 @@ export const useElementsStore = defineStore('elements', {
       const newElement = { ...element, id: uuidv4() }
       this.canvasElements.push(newElement)
       if (this.currentPage) {
-        console.log('Current Page before:', this.currentPage)
+        console.log('Current Page before:', 'dasdas', this.currentPage.elements, this.currentPage)
         this.currentPage.elements = [...this.canvasElements]
         console.log('Current Page after:', this.currentPage)
       } else {

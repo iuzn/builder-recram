@@ -9,6 +9,7 @@ import { ref } from 'vue'
 import IconScale from '@/components/icons/IconScale.vue'
 
 const store = useElementsStore()
+const isCopied: Ref<boolean> = ref(false)
 
 const generateUniquePageName = () => {
   let count = store.pages.length + 1
@@ -36,7 +37,7 @@ const currentPageJSON = ref('')
 const showPageJSON = (pageName: string) => {
   const page = store.pages.find((p) => p.name === pageName)
   if (page) {
-    currentPageJSON.value = JSON.stringify(page.elements, null, 2)
+    currentPageJSON.value = JSON.stringify(store.currentPage?.elements, null, 2)
     showJSON.value = true
   }
   console.log('Page JSON:', page)
@@ -54,23 +55,22 @@ const closeJSONPopup = () => {
   showJSON.value = false
 }
 
-const copyToClipboard = (textToCopy: string): void => {
-  const textarea = document.createElement('textarea')
-  textarea.value = textToCopy
-  document.body.appendChild(textarea)
-
-  textarea.select()
-  document.execCommand('copy')
-
-  // Clean up after copying
-  document.body.removeChild(textarea)
+const copyToClipboard = async (textToCopy: string): Promise<void> => {
+  try {
+    await navigator.clipboard.writeText(textToCopy)
+    console.log('Copying to clipboard was successful!')
+    isCopied.value = true
+    setTimeout(() => (isCopied.value = false), 2000) // Reset state after 2 seconds
+  } catch (err) {
+    console.error('Could not copy text to clipboard: ', err)
+  }
 }
 </script>
 
 <template>
   <div class="bg-white flex p-6 gap-5">
     <div
-      class="group flex w-36 h-32 items-center justify-center text-gray-300 border-gray-200 border border-dashed relative rounded-md"
+      class="group flex w-36 h-32 items-center justify-center text-gray-300 border-gray-200 border border-dashed relative rounded-md cursor-pointer"
       :class="{
         'p-[1px] bg-gradient-to-tr from-[#46BDC5] to-[#5EDE99] border-none shadow-base':
           store.currentPage?.name === page.name
@@ -98,7 +98,7 @@ const copyToClipboard = (textToCopy: string): void => {
           <button class="p-2 rounded-md"><IconEdit /></button>
           <button
             @click="showPageJSON(page.name)"
-            :disabled="page.elements == null"
+            :disabled="store.currentPage?.elements === null"
             class="p-2 rounded-md hover:bg-primary/20 hover:fill-primary fill-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <IconCopy />
@@ -131,11 +131,28 @@ const copyToClipboard = (textToCopy: string): void => {
       ref="popup"
       class="relative bg-white w-full rounded overflow-auto max-w-[calc(100vw-120px)] max-h-[calc(100vh-132px)]"
     >
-      <pre class="select-all">{{ currentPageJSON }}</pre>
-      <div class="sticky flex justify-between bottom-0 inset-0 bg-white h-20 px-4">
-        <button @click="copyToClipboard(currentPageJSON)">Copy to Clipboard</button>
+      <code>
+        <pre class="select-all">{{ currentPageJSON }}</pre>
+      </code>
+      <div class="sticky flex justify-between bottom-0 inset-0 bg-white h-12 px-4">
+        <button @click="copyToClipboard(currentPageJSON)">
+          <!--          {{ isCopied ? 'Copied!' : 'Copy to Clipboard' }}-->
+          <span v-if="isCopied" class="text-green-600">Copied!</span>
+          <span v-else>Copy to Clipboard</span>
+        </button>
         <button @click="closeJSONPopup">Close</button>
       </div>
     </div>
   </div>
 </template>
+<style scoped>
+code > pre {
+  background-color: #f8f8f8;
+  border: 1px solid #ccc;
+  border-radius: 4px;
+  padding: 8px 12px;
+  white-space: pre-wrap;
+  line-height: 1.5;
+  overflow-x: auto;
+}
+</style>
