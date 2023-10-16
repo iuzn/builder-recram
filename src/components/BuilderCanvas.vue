@@ -67,7 +67,7 @@ function dragEnd() {
         <textarea
           v-if="element.type === 'Text'"
           :style="{ fontSize: element.defaultProperties.fontSize }"
-          :value="element.defaultProperties.text"
+          v-model="element.defaultProperties.text"
           class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
           :placeholder="element.defaultProperties.placeholder"
           rows="40"
