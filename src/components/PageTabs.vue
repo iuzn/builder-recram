@@ -6,6 +6,7 @@ import IconCopy from '@/components/icons/IconCopy.vue'
 import IconEdit from '@/components/icons/IconEdit.vue'
 import type { Ref } from 'vue'
 import { ref } from 'vue'
+import IconScale from '@/components/icons/IconScale.vue'
 
 const store = useElementsStore()
 
@@ -67,12 +68,7 @@ const copyToClipboard = (textToCopy: string): void => {
 </script>
 
 <template>
-  <div
-    class="bg-white flex p-6 gap-5"
-    :class="{
-      'overflow-hidden': showJSON
-    }"
-  >
+  <div class="bg-white flex p-6 gap-5">
     <div
       class="group flex w-36 h-32 items-center justify-center text-gray-300 border-gray-200 border border-dashed relative rounded-md"
       :class="{
@@ -83,6 +79,11 @@ const copyToClipboard = (textToCopy: string): void => {
       :key="page.name"
       @click="store.setCurrentPage(page.name)"
     >
+      <span
+        class="w-4 h-4 absolute bg-gradient-to-tr from-[#46BDC5] to-[#5EDE99] rounded-full -top-1 -left-1 z-10 flex items-center justify-center"
+      >
+        <IconScale />
+      </span>
       <div
         class="bg-white w-full h-full rounded-[5px] flex items-center justify-center"
         :class="{
@@ -96,7 +97,8 @@ const copyToClipboard = (textToCopy: string): void => {
           <button class="p-2 rounded-md"><IconEdit /></button>
           <button
             @click="showPageJSON(page.name)"
-            class="p-2 rounded-md hover:bg-primary/20 hover:fill-primary fill-gray-300"
+            :disabled="page.elements == null"
+            class="p-2 rounded-md hover:bg-primary/20 hover:fill-primary fill-gray-300 disabled:opacity-50 disabled:cursor-not-allowed"
           >
             <IconCopy />
           </button>
@@ -121,15 +123,15 @@ const copyToClipboard = (textToCopy: string): void => {
   <!-- JSON Popup -->
   <div
     v-if="showJSON"
-    class="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-black bg-opacity-50 z-50"
+    class="fixed top-0 bottom-0 left-0 right-0 flex items-center justify-center bg-black bg-opacity-50 z-50 overflow-hidden"
     @click="checkClickOutside"
   >
     <div
       ref="popup"
-      class="relative bg-white w-full p-4 rounded overflow-auto max-w-[calc(100vw-120px)] max-h-[calc(100vh-132px)]"
+      class="relative bg-white w-full rounded overflow-auto max-w-[calc(100vw-120px)] max-h-[calc(100vh-132px)]"
     >
       <pre class="select-all">{{ currentPageJSON }}</pre>
-      <div class="sticky flex justify-between -bottom-4 inset-0 bg-white h-20 px-4">
+      <div class="sticky flex justify-between bottom-0 inset-0 bg-white h-20 px-4">
         <button @click="copyToClipboard(currentPageJSON)">Copy to Clipboard</button>
         <button @click="closeJSONPopup">Close</button>
       </div>
