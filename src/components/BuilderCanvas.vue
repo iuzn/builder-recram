@@ -53,7 +53,7 @@ function dragEnd() {
       id="canvas"
     >
       <div
-        v-for="(element, index) in store.canvasElements"
+        v-for="(element, index) in store.canvasElements || []"
         :key="element.id"
         @click="selectElement(element)"
         @dragstart="dragStart(index)"

@@ -19,7 +19,10 @@ export const useElementsStore = defineStore('elements', {
         elements: null
       }
     ] as Page[],
-    currentPage: null as Page | null,
+    currentPage: {
+      name: 'Page 1',
+      elements: null
+    } as Page | null,
     sidebarElements: [
       {
         type: 'Text',
@@ -55,8 +58,9 @@ export const useElementsStore = defineStore('elements', {
     addPage(name: string) {
       const newPage = { name, elements: [] }
       this.pages.push(newPage)
-      this.currentPage = newPage
+      this.setCurrentPage(name)
     },
+
     removePage(name: string) {
       this.pages = this.pages.filter((page) => page.name !== name)
       this.currentPage = this.pages[0] || null
@@ -64,9 +68,17 @@ export const useElementsStore = defineStore('elements', {
     setCurrentPage(name: string) {
       this.currentPage = this.pages.find((page) => page.name === name) || null
     },
+
     addElementToCanvas(element: Element) {
       const newElement = { ...element, id: uuidv4() }
       this.canvasElements.push(newElement)
+      if (this.currentPage) {
+        console.log('Current Page before:', this.currentPage)
+        this.currentPage.elements = [...this.canvasElements]
+        console.log('Current Page after:', this.currentPage)
+      } else {
+        console.log('Current Page is null')
+      }
     },
     selectElement(element: Element | null) {
       this.selectedElement = element
