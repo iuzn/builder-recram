@@ -27,9 +27,14 @@ const addPage = () => {
   const newPageName = generateUniquePageName()
   store.addPage(newPageName)
   console.log('Page eklendi:', newPageName)
+
+  store.setCurrentPage(newPageName)
+  store.canvasElements = []
 }
 const removePage = (name: string) => {
   store.removePage(name)
+
+  store.canvasElements = store.currentPage ? store.currentPage.elements || [] : []
 }
 const showJSON = ref(false)
 const currentPageJSON = ref('')
@@ -94,7 +99,10 @@ const copyToClipboard = async (textToCopy: string): Promise<void> => {
         <span class="absolute -top-4 left-0 text-[9px]">
           {{ page.name }}
         </span>
-        <div class="invisible group-hover:visible flex gap-1">
+        <div
+          class="invisible flex gap-1"
+          :class="{ 'group-hover:visible': store.currentPage?.name === page.name }"
+        >
           <button class="p-2 rounded-md"><IconEdit /></button>
           <button
             @click="showPageJSON(page.name)"

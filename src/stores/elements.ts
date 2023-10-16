@@ -60,24 +60,32 @@ export const useElementsStore = defineStore('elements', {
       this.pages.push(newPage)
       this.setCurrentPage(name)
     },
-
+    updatePage(page: Page) {
+      const pageIndex = this.pages.findIndex((p) => p.name === page.name)
+      if (pageIndex > -1) {
+        this.pages[pageIndex] = page
+      }
+    },
     removePage(name: string) {
       this.pages = this.pages.filter((page) => page.name !== name)
       this.currentPage = this.pages[0] || null
     },
     setCurrentPage(name: string) {
-      this.currentPage = this.pages.find((page) => page.name === name) || null
+      const pageIndex = this.pages.findIndex((page) => page.name === name)
+      if (pageIndex > -1) {
+        this.currentPage = this.pages[pageIndex]
+        this.canvasElements = this.currentPage.elements || []
+      } else {
+        this.currentPage = null
+      }
     },
-
     addElementToCanvas(element: Element) {
       const newElement = { ...element, id: uuidv4() }
       this.canvasElements.push(newElement)
+      // Update currentPage's elements after adding new element
       if (this.currentPage) {
-        console.log('Current Page before:', 'dasdas', this.currentPage.elements, this.currentPage)
         this.currentPage.elements = [...this.canvasElements]
-        console.log('Current Page after:', this.currentPage)
-      } else {
-        console.log('Current Page is null')
+        this.updatePage(this.currentPage) // Add this line
       }
     },
     selectElement(element: Element | null) {
@@ -85,22 +93,14 @@ export const useElementsStore = defineStore('elements', {
       console.log('Store selectedElement:', this.selectedElement)
     },
     reorderElements({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) {
-      // create a copy of the original array
-      const reorderedElements = [...this.canvasElements]
-      // perform the swap
-      const temp = reorderedElements[oldIndex]
-      reorderedElements[oldIndex] = reorderedElements[newIndex]
-      reorderedElements[newIndex] = temp
-      // replace the data
-      this.canvasElements = reorderedElements
-
-      // do the same for current page elements
-      if (this.currentPage && this.currentPage.elements) {
-        const reorderedPageElements = [...this.currentPage.elements]
-        const temp = reorderedPageElements[oldIndex]
-        reorderedPageElements[oldIndex] = reorderedPageElements[newIndex]
-        reorderedPageElements[newIndex] = temp
-        this.currentPage.elements = reorderedPageElements
+      // Check if there is a currentPage
+      if (this.currentPage) {
+        // Perform the swap in canvasElements
+        const temp = this.canvasElements[oldIndex]
+        this.canvasElements[oldIndex] = this.canvasElements[newIndex]
+        this.canvasElements[newIndex] = temp
+        // Now update the currentPage's elements to reflect canvasElements
+        this.currentPage.elements = [...this.canvasElements]
       }
     }
   }

@@ -1,8 +1,9 @@
 <script setup lang="ts">
 import { useElementsStore } from '@/stores/elements'
+import IconDesktop from '@/components/icons/IconDesktop.vue'
+import IconMobile from '@/components/icons/IconMobile.vue'
 
 const store = useElementsStore()
-
 function allowDrop(event: DragEvent) {
   event.preventDefault()
   console.log('allowDrop')
@@ -13,16 +14,16 @@ function drop(event: DragEvent) {
   const elementData = event.dataTransfer?.getData('application/json')
   if (elementData) {
     const element = JSON.parse(elementData)
-    // element.position = { x: event.clientX, y: event.clientY }
     store.addElementToCanvas(element)
     console.log('Element eklendi:', element)
+
+    if (store.currentPage) {
+      store.currentPage.elements = [...store.canvasElements]
+      store.updatePage(store.currentPage) // Add this line
+    }
   }
 }
 
-function selectElement(element: any) {
-  store.selectElement(element)
-  console.log('Element seçildi:', element)
-}
 let draggedElement: any = null
 
 function dragStart(index: number) {
@@ -33,8 +34,14 @@ function dragOver(event: DragEvent, index: number) {
   event.preventDefault()
   if (draggedElement === null) return
   if (draggedElement === index) return
-  store.reorderElements({ oldIndex: draggedElement, newIndex: index })
-  draggedElement = index
+  if (store.currentPage) {
+    store.reorderElements({
+      oldIndex: draggedElement,
+      newIndex: index
+    })
+    store.canvasElements = store.currentPage.elements || []
+    draggedElement = index
+  }
 }
 
 function dragEnd() {
@@ -43,7 +50,11 @@ function dragEnd() {
 </script>
 
 <template>
-  <div class="w-full h-full flex items-center justify-center">
+  <div class="relative w-full h-full flex items-center justify-center">
+    <div class="absolute top-3 flex gap-5">
+      <button><IconDesktop /></button>
+      <button><IconMobile /></button>
+    </div>
     <div
       class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start justify-start p-7 gap-3"
       @drop="drop"
@@ -51,9 +62,9 @@ function dragEnd() {
       id="canvas"
     >
       <div
-        v-for="(element, index) in store.canvasElements || []"
+        v-for="(element, index) in store.currentPage?.elements || []"
         :key="element.id"
-        @click="selectElement(element)"
+        @click="store.selectElement(element)"
         @dragstart="dragStart(index)"
         @dragover="dragOver($event, index)"
         @dragend="dragEnd"
