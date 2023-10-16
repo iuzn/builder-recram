@@ -13,7 +13,7 @@ function drop(event: DragEvent) {
   const elementData = event.dataTransfer?.getData('application/json')
   if (elementData) {
     const element = JSON.parse(elementData)
-    element.position = { x: event.clientX, y: event.clientY }
+    // element.position = { x: event.clientX, y: event.clientY }
     store.addElementToCanvas(element)
     console.log('Element eklendi:', element)
   }
@@ -33,9 +33,7 @@ function dragOver(event: DragEvent, index: number) {
   event.preventDefault()
   if (draggedElement === null) return
   if (draggedElement === index) return
-  const temp = store.canvasElements[draggedElement]
-  store.canvasElements[draggedElement] = store.canvasElements[index]
-  store.canvasElements[index] = temp
+  store.reorderElements({ oldIndex: draggedElement, newIndex: index })
   draggedElement = index
 }
 

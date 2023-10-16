@@ -83,6 +83,25 @@ export const useElementsStore = defineStore('elements', {
     selectElement(element: Element | null) {
       this.selectedElement = element
       console.log('Store selectedElement:', this.selectedElement)
+    },
+    reorderElements({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) {
+      // create a copy of the original array
+      const reorderedElements = [...this.canvasElements]
+      // perform the swap
+      const temp = reorderedElements[oldIndex]
+      reorderedElements[oldIndex] = reorderedElements[newIndex]
+      reorderedElements[newIndex] = temp
+      // replace the data
+      this.canvasElements = reorderedElements
+
+      // do the same for current page elements
+      if (this.currentPage && this.currentPage.elements) {
+        const reorderedPageElements = [...this.currentPage.elements]
+        const temp = reorderedPageElements[oldIndex]
+        reorderedPageElements[oldIndex] = reorderedPageElements[newIndex]
+        reorderedPageElements[newIndex] = temp
+        this.currentPage.elements = reorderedPageElements
+      }
     }
   }
 })
