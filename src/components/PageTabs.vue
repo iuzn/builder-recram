@@ -81,6 +81,7 @@ const copyToClipboard = (textToCopy: string): void => {
     >
       <span
         class="w-4 h-4 absolute bg-gradient-to-tr from-[#46BDC5] to-[#5EDE99] rounded-full -top-1 -left-1 z-10 flex items-center justify-center"
+        v-if="store.currentPage?.name === page.name"
       >
         <IconScale />
       </span>
