@@ -1,3 +1,4 @@
+// elements.ts
 import { defineStore } from 'pinia'
 import { v4 as uuidv4 } from 'uuid'
 
@@ -7,6 +8,7 @@ interface Element {
   icon: string
   defaultProperties: Record<string, any>
 }
+
 interface Page {
   name: string
   elements: Element[] | null
@@ -75,6 +77,7 @@ export const useElementsStore = defineStore('elements', {
       if (pageIndex > -1) {
         this.currentPage = this.pages[pageIndex]
         this.canvasElements = this.currentPage.elements || []
+        this.selectedElement = null // Add this line
       } else {
         this.currentPage = null
       }
@@ -85,12 +88,25 @@ export const useElementsStore = defineStore('elements', {
       // Update currentPage's elements after adding new element
       if (this.currentPage) {
         this.currentPage.elements = [...this.canvasElements]
-        this.updatePage(this.currentPage) // Add this line
+        this.updatePage(this.currentPage)
       }
     },
     selectElement(element: Element | null) {
-      this.selectedElement = element
+      if (element) {
+        this.selectedElement = { ...element }
+      } else {
+        this.selectedElement = element
+      }
       console.log('Store selectedElement:', this.selectedElement)
+    },
+    updateElement(updatedElement: Element) {
+      const idx = this.canvasElements.findIndex((elem) => elem.id === updatedElement.id)
+      if (idx !== -1) {
+        this.canvasElements[idx] = updatedElement
+      }
+    },
+    updateSelectedElement(value: any) {
+      this.selectedElement = value
     },
     reorderElements({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) {
       // Check if there is a currentPage

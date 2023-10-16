@@ -1,3 +1,4 @@
+<!--SideBar.vue-->
 <script setup lang="ts">
 import ElementProperties from '@/components/ElementProperties.vue'
 import { useElementsStore } from '@/stores/elements'
@@ -35,7 +36,6 @@ function getIconComponent(type: keyof typeof icons) {
     />
     <button
       v-else
-      id="sidebar-button"
       v-for="element in store.sidebarElements"
       :key="element.type"
       @dragstart="dragStart(element, $event)"

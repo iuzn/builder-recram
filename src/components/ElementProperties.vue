@@ -1,18 +1,53 @@
+<!--ElementProperties.vue-->
 <script setup lang="ts">
 import { useElementsStore } from '@/stores/elements'
-import { ref } from 'vue'
+import { ref, watchEffect } from 'vue'
 
 const store = useElementsStore()
 const selectedElement = ref(store.selectedElement) as any
-const updateProperties = (key: string, value: any) => {
-  if (selectedElement.value) {
-    selectedElement.defaultProperties[key] = value
+
+watchEffect(() => {
+  if (store.selectedElement !== null) {
+    let selectedItemIndex = store.canvasElements.findIndex((el) => {
+      return el.id === store.selectedElement?.id
+    })
+
+    if (selectedItemIndex !== -1) {
+      store.canvasElements[selectedItemIndex].defaultProperties = {
+        ...store.selectedElement.defaultProperties
+      }
+      if (store.currentPage) {
+        store.updatePage(store.currentPage)
+      }
+    }
   }
+})
+
+function updateProperties(key: string, value: any) {
+  if (selectedElement.value) {
+    selectedElement.value.defaultProperties[key] = value
+
+    let selectedItemIndex = store.canvasElements.findIndex((el) => {
+      return el.id == store.selectedElement?.id
+    })
+
+    if (selectedItemIndex !== -1) {
+      store.canvasElements[selectedItemIndex].defaultProperties[key] = value
+
+      if (store.currentPage) {
+        const name = store.currentPage.name || 'default'
+
+        store.currentPage = { ...store.currentPage, name }
+      }
+    }
+  }
+}
+const clearSelectedElement = () => {
+  store.selectedElement = null
 }
 </script>
 <template>
-  <div id="element-properties">
-    <div>Element Properties</div>
+  <div class="flex h-full flex-col justify-between">
     <div>
       <h2>{{ selectedElement.type }} Properties</h2>
 
@@ -21,7 +56,7 @@ const updateProperties = (key: string, value: any) => {
         <label>
           Value:
           <textarea
-            :value="selectedElement.defaultProperties.value"
+            :value="selectedElement.defaultProperties.text"
             @input="updateProperties('value', ($event.target as HTMLInputElement)?.value)"
           ></textarea>
         </label>
@@ -90,5 +125,7 @@ const updateProperties = (key: string, value: any) => {
         </label>
       </div>
     </div>
+
+    <button @click="clearSelectedElement" class="bg-black text-white w-full h-9">Done</button>
   </div>
 </template>

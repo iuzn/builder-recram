@@ -1,3 +1,4 @@
+<!--BuilderCanvas.vue-->
 <script setup lang="ts">
 import { useElementsStore } from '@/stores/elements'
 import IconDesktop from '@/components/icons/IconDesktop.vue'
@@ -15,11 +16,12 @@ function drop(event: DragEvent) {
   if (elementData) {
     const element = JSON.parse(elementData)
     store.addElementToCanvas(element)
+    store.selectedElement = element
     console.log('Element eklendi:', element)
 
     if (store.currentPage) {
       store.currentPage.elements = [...store.canvasElements]
-      store.updatePage(store.currentPage) // Add this line
+      store.updatePage(store.currentPage)
     }
   }
 }
@@ -76,7 +78,7 @@ function dragEnd() {
         <textarea
           v-if="element.type === 'Text'"
           :style="{ fontSize: element.defaultProperties.fontSize }"
-          v-model="element.defaultProperties.text"
+          :value="element.defaultProperties.text"
           class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
           :placeholder="element.defaultProperties.placeholder"
           rows="40"

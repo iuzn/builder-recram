@@ -1,3 +1,4 @@
+<!--PageTabs.vue-->
 <script setup lang="ts">
 import { useElementsStore } from '@/stores/elements'
 import IconPlusCircle from '@/components/icons/IconPlusCircle.vue'
