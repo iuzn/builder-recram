@@ -8,7 +8,6 @@ interface Element {
 interface Page {
   name: string
   elements: Element[] | null
-  // snapshot?: string
 }
 export const useElementsStore = defineStore('elements', {
   state: () => ({
@@ -69,12 +68,6 @@ export const useElementsStore = defineStore('elements', {
     selectElement(element: Element | null) {
       this.selectedElement = element
     }
-    // updatePageSnapshot(name: string, snapshot: string) {
-    //   const page = this.pages.find((p) => p.name === name)
-    //   if (page) {
-    //     page.snapshot = snapshot
-    //   }
-    // }
   }
 })
-export type { Element, Page } // type-only export
+export type { Element, Page }

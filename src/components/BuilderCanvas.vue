@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import { useElementsStore } from '@/stores/elements'
-// import { watchEffect } from 'vue'
 
 const store = useElementsStore()
 
@@ -14,7 +13,6 @@ function drop(event: DragEvent) {
   const elementData = event.dataTransfer?.getData('application/json')
   if (elementData) {
     const element = JSON.parse(elementData)
-    // Pozisyon bilgisi ekleyebilirsiniz
     element.position = { x: event.clientX, y: event.clientY }
     store.addElementToCanvas(element)
     console.log('Element eklendi:', element)
@@ -25,29 +23,6 @@ function selectElement(element: any) {
   store.selectElement(element)
   console.log('Element seçildi:', element)
 }
-
-//Page Snapshot
-// function captureCanvas(canvasId: string): string | null {
-//   const canvas = document.getElementById(canvasId) as HTMLCanvasElement
-//   if (!canvas) return null
-//
-//   return canvas.toDataURL('image/png')
-// }
-//
-// function updateCanvas() {
-//   const snapshot = captureCanvas('canvas')
-//   if (snapshot && store.currentPage) {
-//     store.updatePageSnapshot(store.currentPage.name, snapshot)
-//   }
-// }
-//
-//
-// watchEffect(() => {
-//    const elements = store.canvasElements
-//   if (elements.length > 0) {
-//     updateCanvas()
-//   }
-// })
 </script>
 
 <template>
@@ -65,7 +40,6 @@ function selectElement(element: any) {
         class="w-full flex items-start justify-center"
         :class="element.type === 'Block' ? 'h-full' : ''"
       >
-        <!-- Render elements here -->
         <!-- Render elements here -->
         <textarea
           v-if="element.type === 'Text'"
