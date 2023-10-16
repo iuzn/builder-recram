@@ -99,14 +99,33 @@ export const useElementsStore = defineStore('elements', {
       }
       console.log('Store selectedElement:', this.selectedElement)
     },
-    updateElement(updatedElement: Element) {
-      const idx = this.canvasElements.findIndex((elem) => elem.id === updatedElement.id)
-      if (idx !== -1) {
-        this.canvasElements[idx] = updatedElement
+    updateElementProperties(elementId: string, updatedProps: Record<string, any>) {
+      if (this.currentPage?.elements) {
+        const elementIndex = this.currentPage.elements.findIndex(
+          (element) => element.id === elementId
+        )
+        if (elementIndex > -1) {
+          const updatedElement = {
+            ...this.currentPage.elements[elementIndex],
+            defaultProperties: {
+              ...this.currentPage.elements[elementIndex].defaultProperties,
+              ...updatedProps
+            }
+          }
+          this.currentPage.elements = [
+            ...this.currentPage.elements.slice(0, elementIndex),
+            updatedElement,
+            ...this.currentPage.elements.slice(elementIndex + 1)
+          ]
+          this.updatePage(this.currentPage)
+        }
       }
-    },
-    updateSelectedElement(value: any) {
-      this.selectedElement = value
+      if (this.selectedElement?.id === elementId) {
+        this.selectedElement.defaultProperties = {
+          ...this.selectedElement.defaultProperties,
+          ...updatedProps
+        }
+      }
     },
     reorderElements({ oldIndex, newIndex }: { oldIndex: number; newIndex: number }) {
       // Check if there is a currentPage

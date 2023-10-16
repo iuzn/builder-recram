@@ -3,6 +3,7 @@
 import { useElementsStore } from '@/stores/elements'
 import IconDesktop from '@/components/icons/IconDesktop.vue'
 import IconMobile from '@/components/icons/IconMobile.vue'
+import { watchEffect } from 'vue'
 
 const store = useElementsStore()
 function allowDrop(event: DragEvent) {
@@ -25,7 +26,18 @@ function drop(event: DragEvent) {
     }
   }
 }
+watchEffect(() => {
+  if (store.selectedElement) {
+    const elementIndex = store.canvasElements.findIndex(
+      (element) => element.id === store.selectedElement?.id
+    )
 
+    if (elementIndex != -1) {
+      store.canvasElements[elementIndex].defaultProperties.text =
+        store.selectedElement.defaultProperties.text
+    }
+  }
+})
 let draggedElement: any = null
 
 function dragStart(index: number) {
@@ -48,6 +60,17 @@ function dragOver(event: DragEvent, index: number) {
 
 function dragEnd() {
   draggedElement = null
+}
+
+function onInput(event: Event, elementId: string) {
+  if (event.target instanceof HTMLInputElement) {
+    const updatedText = event.target.value
+    store.updateElementProperties(elementId, { text: updatedText })
+
+    if (store.selectedElement && store.selectedElement.id === elementId) {
+      store.selectedElement.defaultProperties.text = updatedText
+    }
+  }
 }
 </script>
 
@@ -78,7 +101,8 @@ function dragEnd() {
         <textarea
           v-if="element.type === 'Text'"
           :style="{ fontSize: element.defaultProperties.fontSize }"
-          :value="element.defaultProperties.text"
+          v-model="element.defaultProperties.text"
+          @input="onInput($event, element.id)"
           class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
           :placeholder="element.defaultProperties.placeholder"
           rows="40"

@@ -23,6 +23,11 @@ watchEffect(() => {
   }
 })
 
+watchEffect(() => {
+  if (store.selectedElement) {
+    selectedElement.value = { ...store.selectedElement }
+  }
+})
 function updateProperties(key: string, value: any) {
   if (selectedElement.value) {
     selectedElement.value.defaultProperties[key] = value
@@ -38,6 +43,7 @@ function updateProperties(key: string, value: any) {
         const name = store.currentPage.name || 'default'
 
         store.currentPage = { ...store.currentPage, name }
+        store.updatePage(store.currentPage)
       }
     }
   }
@@ -48,17 +54,14 @@ const clearSelectedElement = () => {
 </script>
 <template>
   <div class="flex h-full flex-col justify-between">
-    <div>
-      <h2>{{ selectedElement.type }} Properties</h2>
+    <div class="flex flex-col px-4">
+      <h2 class="text-center w-full py-3">{{ selectedElement.type }} Properties</h2>
 
       <!-- Text Properties -->
-      <div v-if="selectedElement.type === 'Text'">
+      <div v-if="selectedElement.type === 'Text'" class="flex flex-col gap-4">
         <label>
           Value:
-          <textarea
-            :value="selectedElement.defaultProperties.text"
-            @input="updateProperties('value', ($event.target as HTMLInputElement)?.value)"
-          ></textarea>
+          <textarea v-model="selectedElement.defaultProperties.text"></textarea>
         </label>
         <label>
           Font Size:
@@ -70,7 +73,7 @@ const clearSelectedElement = () => {
         </label>
       </div>
       <!-- Button Properties -->
-      <div v-else-if="selectedElement.type === 'Button'">
+      <div v-else-if="selectedElement.type === 'Button'" class="flex flex-col gap-4">
         <label>
           Text:
           <input
@@ -91,7 +94,7 @@ const clearSelectedElement = () => {
       </div>
 
       <!-- Input Properties -->
-      <div v-else-if="selectedElement.type === 'Input'">
+      <div v-else-if="selectedElement.type === 'Input'" class="flex flex-col gap-4">
         <label>
           Placeholder:
           <input
@@ -102,7 +105,7 @@ const clearSelectedElement = () => {
       </div>
 
       <!-- Block Properties -->
-      <div v-else-if="selectedElement.type === 'Block'">
+      <div v-else-if="selectedElement.type === 'Block'" class="flex flex-col gap-4">
         <label>
           Inner Padding:
           <input
