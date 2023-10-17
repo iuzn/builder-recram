@@ -121,7 +121,6 @@ export const useElementsStore = defineStore('elements', {
       } else {
         this.selectedElement = element
       }
-      console.log('Store selectedElement:', this.selectedElement)
     },
     updateElementProperties(elementId: string, updatedProps: Record<string, any>) {
       if (this.currentPage?.elements) {

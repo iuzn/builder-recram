@@ -27,7 +27,6 @@ const generateUniquePageName = () => {
 const addPage = () => {
   const newPageName = generateUniquePageName()
   store.addPage(newPageName)
-  console.log('Page eklendi:', newPageName)
 
   store.setCurrentPage(newPageName)
   store.canvasElements = []
@@ -46,8 +45,6 @@ const showPageJSON = (pageName: string) => {
     currentPageJSON.value = JSON.stringify(store.currentPage?.elements, null, 2)
     showJSON.value = true
   }
-  console.log('Page JSON:', page)
-  console.log('Page JSON:', currentPageJSON.value)
 }
 const popup: Ref<HTMLElement | null> = ref(null)
 
@@ -64,11 +61,10 @@ const closeJSONPopup = () => {
 const copyToClipboard = async (textToCopy: string): Promise<void> => {
   try {
     await navigator.clipboard.writeText(textToCopy)
-    console.log('Copying to clipboard was successful!')
     isCopied.value = true
     setTimeout(() => (isCopied.value = false), 2000) // Reset state after 2 seconds
   } catch (err) {
-    console.error('Could not copy text to clipboard: ', err)
+    console.error('Failed to copy: ', err)
   }
 }
 </script>

@@ -9,7 +9,6 @@ import DOMPurify from 'dompurify'
 const store = useElementsStore()
 function allowDrop(event: DragEvent) {
   event.preventDefault()
-  console.log('allowDrop')
 }
 
 function drop(event: DragEvent) {
@@ -19,7 +18,6 @@ function drop(event: DragEvent) {
     const element = JSON.parse(elementData)
     store.addElementToCanvas(element)
     store.selectedElement = element
-    console.log('Element eklendi:', element)
 
     if (store.currentPage) {
       store.currentPage.elements = [...store.canvasElements]
@@ -149,10 +147,10 @@ function onInput(event: Event, elementId: string) {
             marginTop: element.defaultProperties.marginTop,
             marginBottom: element.defaultProperties.marginBottom
           }"
-          class="flex w-full h-full gap-3 justify-center items-center border border-transparent"
           :class="{
-            ' border-[#81CAFF] border-dashed': store.selectedElement?.id === element.id
+            'border-[#81CAFF] border-dashed': store.selectedElement?.id === element.id
           }"
+          class="flex w-full h-full gap-3 justify-center items-center border border-transparent"
         >
           <div
             v-for="(_, index) in Array.from({ length: element.defaultProperties.children })"

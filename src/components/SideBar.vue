@@ -11,7 +11,6 @@ const store = useElementsStore()
 
 function dragStart(element: any, event: DragEvent) {
   event.dataTransfer?.setData('application/json', JSON.stringify(element))
-  console.log('Drag başladı:', element)
 }
 const icons: { [key: string]: any } = {
   button: IconButton,
