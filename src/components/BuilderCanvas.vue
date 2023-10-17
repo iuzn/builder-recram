@@ -82,7 +82,7 @@ function onInput(event: Event, elementId: string) {
       <button><IconMobile /></button>
     </div>
     <div
-      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start justify-start p-7 gap-3"
+      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start justify-start p-7 gap-3 overflow-y-scroll"
       @drop="drop"
       @dragover="allowDrop"
       id="canvas"
@@ -98,7 +98,6 @@ function onInput(event: Event, elementId: string) {
         class="w-full flex items-start justify-center"
         :class="element.type === 'Block' ? 'h-full' : ''"
       >
-        <!-- Render elements here -->
         <span
           v-if="element.type === 'Text'"
           :style="{
@@ -108,9 +107,16 @@ function onInput(event: Event, elementId: string) {
             textDecoration: element.defaultProperties.textDecoration,
             textAlign: element.defaultProperties.textAlign
           }"
-          v-html="DOMPurify.sanitize(element.defaultProperties.text.replace(/\n/g, '<br/>'))"
+          v-html="
+            DOMPurify.sanitize(element.defaultProperties.text.replace(/\n/g, '<br/>')) ||
+            'Text Here'
+          "
           @input="onInput($event, element.id)"
-          class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent"
+          class="w-full h-auto decoration-none text-sm p-1.5 rounded-md"
+          :class="{
+            'ring-1 ring-gray-200': store.selectedElement?.id === element.id,
+            'italic font-light text-gray-300': element.defaultProperties.text === ''
+          }"
         />
 
         <button
