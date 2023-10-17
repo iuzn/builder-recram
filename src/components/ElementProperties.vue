@@ -2,10 +2,14 @@
 <script setup lang="ts">
 import { useElementsStore } from '@/stores/elements'
 import { ref, watchEffect } from 'vue'
+import DropDown from '@/components/common/DropDown.vue'
+import IconArrowDown from '@/components/icons/IconArrowDown.vue'
+import tagToTextType, { tags } from '@/utils/textType'
 
 const store = useElementsStore()
-const selectedElement = ref(store.selectedElement) as any
-
+const selectedElement = ref(
+  store.selectedElement ? store.selectedElement : { defaultProperties: {} }
+) as any
 watchEffect(() => {
   if (store.selectedElement !== null) {
     let selectedItemIndex = store.canvasElements.findIndex((el) => {
@@ -62,11 +66,37 @@ const clearSelectedElement = () => {
       </h2>
 
       <!-- Text Properties -->
-      <div v-if="selectedElement.type === 'Text'" class="flex flex-col gap-4">
+      <div v-if="selectedElement.type === 'Text'" class="flex flex-col gap-4 px-5 py-3">
+        <DropDown
+          :value="selectedElement.defaultProperties.type"
+          @update:value="updateProperties('textType', $event)"
+          trigger-class-name="h-10 border-gray-200 border w-full flex justify-between items-center px-3 rounded text-sm"
+          :close-when-click-content="true"
+        >
+          <template #trigger
+            ><span> {{ tagToTextType(store.selectedElement?.defaultProperties.type) }}</span>
+            <IconArrowDown />
+          </template>
+          <template #content>
+            <div class="flex flex-col w-full bg-white rounded-md border-main shadow-base divide-y">
+              <button
+                v-for="(type, index) in tags"
+                :key="index"
+                :value="type"
+                @click="updateProperties('type', type)"
+                class="text-center py-1 hover:bg-gray-50"
+              >
+                <!-- Converts 'h1' to 'Heading 1', 'p' to 'Paragraph' -->
+                {{ type.replace(/^h/, 'Heading ').replace(/^p$/, 'Paragraph') }}
+              </button>
+            </div>
+          </template>
+        </DropDown>
         <label>
           Value:
           <textarea v-model="selectedElement.defaultProperties.text"></textarea>
         </label>
+
         <label>
           Font Size:
           <input

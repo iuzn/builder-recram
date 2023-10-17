@@ -29,7 +29,7 @@ export const useElementsStore = defineStore('elements', {
       {
         type: 'Text',
         icon: 'text',
-        defaultProperties: { text: '', placeholder: 'Text Here', fontSize: '14px' }
+        defaultProperties: { text: '', placeholder: 'Text Here', fontSize: '14px', type: 'p' }
       },
       {
         type: 'Button',

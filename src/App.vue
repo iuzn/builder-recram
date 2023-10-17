@@ -1,3 +1,4 @@
+<!--App.vue-->
 <script setup lang="ts">
 import SideBar from './components/SideBar.vue'
 import BuilderCanvas from './components/BuilderCanvas.vue'
@@ -10,7 +11,7 @@ favicon.href = '/favicon.ico'
 </script>
 
 <template>
-  <div id="app" class="bg-main">
+  <div id="app" class="bg-main relative">
     <TopBar />
     <div class="flex">
       <SideBar />
