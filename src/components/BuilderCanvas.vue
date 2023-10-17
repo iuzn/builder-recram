@@ -101,7 +101,13 @@ function onInput(event: Event, elementId: string) {
         <!-- Render elements here -->
         <span
           v-if="element.type === 'Text'"
-          :style="{ fontSize: element.defaultProperties.fontSize }"
+          :style="{
+            fontSize: element.defaultProperties.fontSize,
+            fontWeight: element.defaultProperties.fontWeight,
+            fontStyle: element.defaultProperties.fontStyle,
+            textDecoration: element.defaultProperties.textDecoration,
+            textAlign: element.defaultProperties.textAlign
+          }"
           v-html="DOMPurify.sanitize(element.defaultProperties.text.replace(/\n/g, '<br/>'))"
           @input="onInput($event, element.id)"
           class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent"

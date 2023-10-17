@@ -5,7 +5,14 @@ import { ref, watchEffect } from 'vue'
 import DropDown from '@/components/common/DropDown.vue'
 import IconArrowDown from '@/components/icons/IconArrowDown.vue'
 import tagToTextType, { tags } from '@/utils/textType'
-import { fonts } from '@/utils/font'
+import { fonts, fontSizes } from '@/utils/font'
+import IconBold from '@/components/icons/IconBold.vue'
+import IconItalic from '@/components/icons/IconItalic.vue'
+import IconUnderline from '@/components/icons/IconUnderline.vue'
+import IconAlignJustified from '@/components/icons/IconAlignJustified.vue'
+import IconAlignLeft from '@/components/icons/IconAlignLeft.vue'
+import IconAlignCenter from '@/components/icons/IconAlignCenter.vue'
+import IconAlignRight from '@/components/icons/IconAlignRight.vue'
 
 const store = useElementsStore()
 const selectedElement = ref(
@@ -123,14 +130,117 @@ const clearSelectedElement = () => {
             </div>
           </template>
         </DropDown>
-        <label>
-          Font Size:
-          <input
-            type="number"
-            :value="parseInt(selectedElement.defaultProperties.fontSize)"
-            @input="updateProperties('fontSize', `${($event.target as HTMLInputElement)?.value}px`)"
-          />
-        </label>
+        <span class="text-gray-400 text-xs">Font</span>
+        <div class="flex w-full justify-between">
+          <button
+            v-for="(fontSize, index) in fontSizes"
+            :key="index"
+            :value="fontSize"
+            @click="updateProperties('fontSize', fontSize)"
+            class="text-center hover:bg-gray-50 w-8 h-8 flex items-center justify-center rounded"
+            :class="
+              fontSize === selectedElement.defaultProperties.fontSize
+                ? 'text-gray-950'
+                : 'text-gray-400'
+            "
+            :style="{
+              fontSize: fontSize
+            }"
+          >
+            aA
+          </button>
+        </div>
+
+        <span class="text-gray-400 text-xs">Specification</span>
+        <div class="flex w-full justify-between">
+          <button
+            class="hover:bg-gray-50 w-8 h-8 flex items-center justify-center rounded"
+            @click="
+              updateProperties(
+                'fontWeight',
+                store.selectedElement?.defaultProperties.fontWeight === 'bold' ? 'normal' : 'bold'
+              )
+            "
+          >
+            <IconBold
+              :style="{
+                fontWeight: selectedElement.defaultProperties.fontWeight
+              }"
+              :class="{
+                'fill-gray-950': store.selectedElement?.defaultProperties.fontWeight === 'bold',
+                'fill-gray-400': store.selectedElement?.defaultProperties.fontWeight !== 'bold'
+              }"
+            />
+          </button>
+          <button
+            class="hover:bg-gray-50 w-8 h-8 flex items-center justify-center rounded"
+            @click="
+              updateProperties(
+                'textDecoration',
+                store.selectedElement?.defaultProperties.textDecoration === 'underline'
+                  ? 'none'
+                  : 'underline'
+              )
+            "
+          >
+            <IconUnderline
+              :style="{
+                textDecoration: selectedElement.defaultProperties.textDecoration
+              }"
+              :class="{
+                'fill-gray-950':
+                  store.selectedElement?.defaultProperties.textDecoration === 'underline',
+                'fill-gray-400':
+                  store.selectedElement?.defaultProperties.textDecoration !== 'underline'
+              }"
+            />
+          </button>
+          <button
+            class="hover:bg-gray-50 w-8 h-8 flex items-center justify-center rounded"
+            @click="
+              updateProperties(
+                'fontStyle',
+                store.selectedElement?.defaultProperties.fontStyle === 'italic'
+                  ? 'normal'
+                  : 'italic'
+              )
+            "
+          >
+            <IconItalic
+              :style="{
+                fontStyle: selectedElement.defaultProperties.fontStyle
+              }"
+              :class="{
+                'fill-gray-950': store.selectedElement?.defaultProperties.fontStyle === 'italic',
+                'fill-gray-400': store.selectedElement?.defaultProperties.fontStyle !== 'italic'
+              }"
+            />
+          </button>
+          <button
+            v-for="(align, index) in [
+              { alignment: 'left', icon: IconAlignLeft },
+              { alignment: 'center', icon: IconAlignCenter },
+              { alignment: 'right', icon: IconAlignRight },
+              { alignment: 'justify', icon: IconAlignJustified }
+            ]"
+            :key="index"
+            class="hover:bg-gray-50 w-8 h-8 flex items-center justify-center rounded"
+            @click="updateProperties('textAlign', align.alignment)"
+          >
+            <component
+              :is="align.icon"
+              :style="{
+                textAlign: selectedElement.defaultProperties.textAlign
+              }"
+              :class="{
+                'fill-gray-950':
+                  store.selectedElement?.defaultProperties.textAlign === align.alignment,
+                'fill-gray-400':
+                  store.selectedElement?.defaultProperties.textAlign !== align.alignment
+              }"
+            />
+          </button>
+        </div>
       </div>
       <!-- Button Properties -->
       <div v-else-if="selectedElement.type === 'Button'" class="flex flex-col gap-4">

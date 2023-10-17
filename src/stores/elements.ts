@@ -33,8 +33,12 @@ export const useElementsStore = defineStore('elements', {
           text: '',
           placeholder: 'Text Here',
           font: 'Rubik',
-          fontSize: '14px',
-          type: 'p'
+          fontSize: '16px',
+          type: 'p',
+          fontWeight: 'normal',
+          fontStyle: 'normal',
+          textDecoration: 'none',
+          textAlign: 'left'
         }
       },
       {
