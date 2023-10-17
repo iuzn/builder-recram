@@ -5,6 +5,7 @@ import { ref, watchEffect } from 'vue'
 import DropDown from '@/components/common/DropDown.vue'
 import IconArrowDown from '@/components/icons/IconArrowDown.vue'
 import tagToTextType, { tags } from '@/utils/textType'
+import { fonts } from '@/utils/font'
 
 const store = useElementsStore()
 const selectedElement = ref(
@@ -69,7 +70,7 @@ const clearSelectedElement = () => {
       <div v-if="selectedElement.type === 'Text'" class="flex flex-col gap-4 px-5 py-3">
         <DropDown
           :value="selectedElement.defaultProperties.type"
-          @update:value="updateProperties('textType', $event)"
+          @update:value="updateProperties('type', $event)"
           trigger-class-name="h-10 border-gray-200 border w-full flex justify-between items-center px-3 rounded text-sm"
           :close-when-click-content="true"
         >
@@ -92,11 +93,36 @@ const clearSelectedElement = () => {
             </div>
           </template>
         </DropDown>
-        <label>
-          Value:
-          <textarea v-model="selectedElement.defaultProperties.text"></textarea>
-        </label>
-
+        <textarea
+          v-model="selectedElement.defaultProperties.text"
+          class="w-full decoration-none text-sm p-1.5 placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded h-[260px]"
+          placeholder="Text"
+        ></textarea>
+        <span class="text-gray-400 text-xs">Font</span>
+        <DropDown
+          :value="selectedElement.defaultProperties.font"
+          @update:value="updateProperties('font', $event)"
+          trigger-class-name="h-10 border-gray-200 border w-full flex justify-between items-center px-3 rounded text-sm"
+          :close-when-click-content="true"
+        >
+          <template #trigger
+            ><span> {{ store.selectedElement?.defaultProperties.font }}</span>
+            <IconArrowDown />
+          </template>
+          <template #content>
+            <div class="flex flex-col w-full bg-white rounded-md border-main shadow-base divide-y">
+              <button
+                v-for="(font, index) in fonts"
+                :key="index"
+                :value="font"
+                @click="updateProperties('font', font)"
+                class="text-center py-1 hover:bg-gray-50"
+              >
+                {{ font }}
+              </button>
+            </div>
+          </template>
+        </DropDown>
         <label>
           Font Size:
           <input

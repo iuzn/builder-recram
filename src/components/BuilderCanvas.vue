@@ -4,6 +4,7 @@ import { useElementsStore } from '@/stores/elements'
 import IconDesktop from '@/components/icons/IconDesktop.vue'
 import IconMobile from '@/components/icons/IconMobile.vue'
 import { watchEffect } from 'vue'
+import DOMPurify from 'dompurify'
 
 const store = useElementsStore()
 function allowDrop(event: DragEvent) {
@@ -98,14 +99,12 @@ function onInput(event: Event, elementId: string) {
         :class="element.type === 'Block' ? 'h-full' : ''"
       >
         <!-- Render elements here -->
-        <textarea
+        <span
           v-if="element.type === 'Text'"
           :style="{ fontSize: element.defaultProperties.fontSize }"
-          v-model="element.defaultProperties.text"
+          v-html="DOMPurify.sanitize(element.defaultProperties.text.replace(/\n/g, '<br/>'))"
           @input="onInput($event, element.id)"
-          class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent resize-y"
-          :placeholder="element.defaultProperties.placeholder"
-          rows="40"
+          class="w-full h-20 decoration-none text-sm border-dashed p-1.5 placeholder:italic placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border border-transparent"
         />
 
         <button
