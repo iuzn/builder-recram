@@ -54,8 +54,12 @@ const clearSelectedElement = () => {
 </script>
 <template>
   <div class="flex h-full flex-col justify-between">
-    <div class="flex flex-col px-4">
-      <h2 class="text-center w-full py-3">{{ selectedElement.type }} Properties</h2>
+    <div class="flex flex-col">
+      <h2
+        class="text-center w-full flex h-10 items-center justify-center border-b border-main text-sm"
+      >
+        {{ selectedElement.type }}
+      </h2>
 
       <!-- Text Properties -->
       <div v-if="selectedElement.type === 'Text'" class="flex flex-col gap-4">
@@ -105,30 +109,157 @@ const clearSelectedElement = () => {
       </div>
 
       <!-- Block Properties -->
-      <div v-else-if="selectedElement.type === 'Block'" class="flex flex-col gap-4">
-        <label>
-          Inner Padding:
-          <input
-            type="number"
-            :value="parseInt(selectedElement.defaultProperties.Padding)"
-            @input="
-              updateProperties('innerPadding', `${($event.target as HTMLInputElement)?.value}px`)
-            "
-          />
-        </label>
-        <label>
-          Outer Margin:
-          <input
-            type="number"
-            :value="parseInt(selectedElement.defaultProperties.Margin)"
-            @input="
-              updateProperties('outerMargin', `${($event.target as HTMLInputElement)?.value}px`)
-            "
-          />
-        </label>
+      <div v-else-if="selectedElement.type === 'Block'" class="flex flex-col gap-4 px-5 py-3">
+        <span class="text-gray-400 text-xs">Block Style</span>
+        <div class="flex flex-col gap-2.5">
+          <button
+            class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5"
+          >
+            <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
+          </button>
+          <button
+            class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5 gap-3.5"
+          >
+            <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
+            <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
+          </button>
+          <button
+            class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5 gap-3.5"
+          >
+            <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
+            <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
+            <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
+          </button>
+        </div>
+
+        <span class="text-gray-400 text-xs">Padding</span>
+        <div class="flex gap-1.5">
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -left-[1px] border-l h-7 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.paddingLeft)"
+              @input="
+                updateProperties('paddingLeft', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px.</span>
+          </span>
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -top-[1px] border-t w-12 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.paddingTop)"
+              @input="
+                updateProperties('paddingTop', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px.</span>
+          </span>
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -right-[1px] border-r h-7 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.paddingRight)"
+              @input="
+                updateProperties('paddingRight', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px.</span>
+          </span>
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -bottom-[1px] border-b w-12 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.paddingBottom)"
+              @input="
+                updateProperties('paddingBottom', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px.</span>
+          </span>
+        </div>
+        <span class="text-gray-400 text-xs">Margin</span>
+        <div class="flex gap-1.5">
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -left-[1px] border-l h-7 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.marginLeft)"
+              @input="
+                updateProperties('marginLeft', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px</span>
+          </span>
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -top-[1px] border-t w-12 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.marginTop)"
+              @input="
+                updateProperties('marginTop', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px</span>
+          </span>
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -right-[1px] border-r h-7 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.marginRight)"
+              @input="
+                updateProperties('marginRight', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px</span>
+          </span>
+          <span class="relative flex items-center justify-center border rounded w-full h-10">
+            <span class="absolute -bottom-[1px] border-b w-12 border-gray-950 rounded"></span>
+            <input
+              type="number"
+              class="border-none outline-none text-center text-sm"
+              min="0"
+              max="100"
+              :value="parseInt(selectedElement.defaultProperties.marginBottom)"
+              @input="
+                updateProperties('marginBottom', `${($event.target as HTMLInputElement)?.value}px`)
+              "
+            />
+            <span class="text-xs text-gray-300">px</span>
+          </span>
+        </div>
       </div>
     </div>
 
     <button @click="clearSelectedElement" class="bg-black text-white w-full h-9">Done</button>
   </div>
 </template>
+<style scoped>
+input::-webkit-outer-spin-button,
+input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+</style>

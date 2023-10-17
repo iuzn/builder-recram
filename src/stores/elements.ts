@@ -49,7 +49,18 @@ export const useElementsStore = defineStore('elements', {
       {
         type: 'Block',
         icon: 'block',
-        defaultProperties: { text: 'Default Block', fontSize: '16px' }
+        defaultProperties: {
+          text: 'Default Block',
+          fontSize: '16px',
+          paddingLeft: '10px',
+          paddingTop: '10px',
+          paddingRight: '10px',
+          paddingBottom: '10px',
+          marginLeft: '10px',
+          marginTop: '10px',
+          marginRight: '10px',
+          marginBottom: '10px'
+        }
       }
     ],
     canvasElements: [] as Element[],
