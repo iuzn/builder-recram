@@ -60,6 +60,8 @@ export const useElementsStore = defineStore('elements', {
         type: 'Block',
         icon: 'block',
         defaultProperties: {
+          children: 2,
+
           text: 'Default Block',
           fontSize: '16px',
           paddingLeft: '10px',

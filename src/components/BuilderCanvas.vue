@@ -132,11 +132,24 @@ function onInput(event: Event, elementId: string) {
         />
         <div
           v-else-if="element.type === 'Block'"
-          :style="{ fontSize: element.defaultProperties.fontSize }"
+          :style="{
+            fontSize: element.defaultProperties.fontSize,
+            paddingLeft: element.defaultProperties.paddingLeft,
+            paddingRight: element.defaultProperties.paddingRight,
+            paddingTop: element.defaultProperties.paddingTop,
+            paddingBottom: element.defaultProperties.paddingBottom,
+            marginLeft: element.defaultProperties.marginLeft,
+            marginRight: element.defaultProperties.marginRight,
+            marginTop: element.defaultProperties.marginTop,
+            marginBottom: element.defaultProperties.marginBottom
+          }"
           class="flex w-full h-full gap-3 justify-center items-center"
         >
-          <div class="border w-full h-full"></div>
-          <div class="border w-full h-full"></div>
+          <div
+            v-for="(_, index) in Array.from({ length: element.defaultProperties.children })"
+            :key="index"
+            class="border w-full h-full"
+          ></div>
         </div>
       </div>
     </div>

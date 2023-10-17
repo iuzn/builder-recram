@@ -258,7 +258,9 @@ const clearSelectedElement = () => {
             @input="updateProperties('action', ($event.target as HTMLInputElement)?.value)"
           >
             <option>None</option>
-            <option>Redirect to Next Page</option>
+            <option v-for="(page, index) in store.pages" :key="index" :value="page.name">
+              {{ page.name }}
+            </option>
           </select>
         </label>
       </div>
@@ -280,17 +282,29 @@ const clearSelectedElement = () => {
         <div class="flex flex-col gap-2.5">
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5"
+            @click="updateProperties('children', 1)"
+            :class="{
+              'bg-blue-100': selectedElement.defaultProperties.children === 1
+            }"
           >
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
           </button>
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5 gap-3.5"
+            @click="updateProperties('children', 2)"
+            :class="{
+              'bg-blue-100': selectedElement.defaultProperties.children === 2
+            }"
           >
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
           </button>
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5 gap-3.5"
+            @click="updateProperties('children', 3)"
+            :class="{
+              'bg-blue-100': selectedElement.defaultProperties.children === 3
+            }"
           >
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
