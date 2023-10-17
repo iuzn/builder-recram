@@ -1,46 +1,61 @@
-# builder-recram
+# RecRam Builder
 
-This template should help get you started developing with Vue 3 in Vite.
+The RecRam Builder is a project developed with Vue 3 and Vite. Its purpose is to provide an environment for developing draggable UI components and using them to construct a webpage in a drag-n-drop fashion.
 
-## Recommended IDE Setup
+## Project Structure
 
-[VSCode](https://code.visualstudio.com/) + [Volar](https://marketplace.visualstudio.com/items?itemName=Vue.volar) (and disable Vetur) + [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin).
+RecRam Builder mainly focuses on creating webpage structures with different draggable UI elements (like Button, Text, Input, Block etc.).
 
-## Type Support for `.vue` Imports in TS
+Key elements of this project are: `App.vue`, `Sidebar.vue`, `ElementProperties.vue`, `BuilderCanvas.vue` and `elements.ts` files.
 
-TypeScript cannot handle type information for `.vue` imports by default, so we replace the `tsc` CLI with `vue-tsc` for type checking. In editors, we need [TypeScript Vue Plugin (Volar)](https://marketplace.visualstudio.com/items?itemName=Vue.vscode-typescript-vue-plugin) to make the TypeScript language service aware of `.vue` types.
+- `App.vue` is the root component of the Vue application.
+- `Sidebar.vue` provides a collection of UI elements that can be dragged into the builder.
+- `ElementProperties.vue` reflects the properties of the selected element from the builder.
+- `BuilderCanvas.vue` is where UI elements are dropped and set up.
+- `elements.ts` manages the state of the elements in the application.
 
-If the standalone TypeScript plugin doesn't feel fast enough to you, Volar has also implemented a [Take Over Mode](https://github.com/johnsoncodehk/volar/discussions/471#discussioncomment-1361669) that is more performant. You can enable it by the following steps:
+## Multiple Pages Design and JSON Export Per Page
 
-1. Disable the built-in TypeScript Extension
-    1) Run `Extensions: Show Built-in Extensions` from VSCode's command palette
-    2) Find `TypeScript and JavaScript Language Features`, right click and select `Disable (Workspace)`
-2. Reload the VSCode window by running `Developer: Reload Window` from the command palette.
+We have introduced a new feature to the RecRam Builder which now allows the design of multiple pages and JSON export for each designed page.
 
-## Customize configuration
+- `PageTabs.vue`  facilitates the design of multiple pages. It imports various icons, stores, and types for handling the new feature. It contains methods to:
+- Generate unique page names when a new page is added.
+- Add and remove pages.
+- Export the design of a current page in JSON format and show the JSON in a popup.
+- Copy the JSON to the clipboard.
 
-See [Vite Configuration Reference](https://vitejs.dev/config/).
+### Template Section
 
+The template section contains the HTML to display the UI for page tabs. This includes:
+
+- A UI button for creating a new page
+- UI for each existing page with buttons to edit the page, copy JSON of the page, and to delete the page
+
+### JSON Popup
+
+A popup window is implemented to display the JSON of a page design. It is also equipped with a copy to clipboard function.
+
+ 
 ## Project Setup
 
-```sh
-npm install
+```bash
+    bun i
 ```
 
-### Compile and Hot-Reload for Development
+### Compiles and hot-reloads for development
 
-```sh
-npm run dev
+```bash
+    bun dev
 ```
 
-### Type-Check, Compile and Minify for Production
+### Compiles and minifies for production
 
-```sh
-npm run build
+```bash
+    bun build
 ```
 
-### Lint with [ESLint](https://eslint.org/)
+### Lints and fixes files
 
-```sh
-npm run lint
+```bash
+    bun lint
 ```
