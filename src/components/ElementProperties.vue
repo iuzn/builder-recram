@@ -13,6 +13,7 @@ import IconAlignJustified from '@/components/icons/IconAlignJustified.vue'
 import IconAlignLeft from '@/components/icons/IconAlignLeft.vue'
 import IconAlignCenter from '@/components/icons/IconAlignCenter.vue'
 import IconAlignRight from '@/components/icons/IconAlignRight.vue'
+import viewType from '@/utils/viewType'
 
 const store = useElementsStore()
 const selectedElement = ref(
@@ -101,10 +102,10 @@ const clearSelectedElement = () => {
         </DropDown>
         <textarea
           v-model="selectedElement.defaultProperties.text"
-          class="w-full decoration-none text-sm p-1.5 placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded h-[260px]"
+          class="w-full decoration-none text-sm p-1.5 placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded h-[160px]"
           placeholder="Text"
         ></textarea>
-        <span class="text-gray-400 text-xs">Font</span>
+        <span class="text-gray-400 text-xs -mb-2">Font</span>
         <DropDown
           :value="selectedElement.defaultProperties.font"
           @update:value="updateProperties('font', $event)"
@@ -129,7 +130,7 @@ const clearSelectedElement = () => {
             </div>
           </template>
         </DropDown>
-        <span class="text-gray-400 text-xs">Font</span>
+        <span class="text-gray-400 text-xs -mb-2">Font Size</span>
         <div class="flex w-full justify-between">
           <button
             v-for="(fontSize, index) in fontSizes"
@@ -140,7 +141,7 @@ const clearSelectedElement = () => {
             :class="
               fontSize === selectedElement.defaultProperties.fontSize
                 ? 'text-gray-950'
-                : 'text-gray-400'
+                : 'text-gray-300'
             "
             :style="{
               fontSize: fontSize
@@ -150,7 +151,7 @@ const clearSelectedElement = () => {
           </button>
         </div>
 
-        <span class="text-gray-400 text-xs">Specification</span>
+        <span class="text-gray-400 text-xs -mb-2">Specification</span>
         <div class="flex w-full justify-between">
           <button
             class="hover:bg-gray-50 w-8 h-8 flex items-center justify-center rounded"
@@ -167,7 +168,7 @@ const clearSelectedElement = () => {
               }"
               :class="{
                 'fill-gray-950': store.selectedElement?.defaultProperties.fontWeight === 'bold',
-                'fill-gray-400': store.selectedElement?.defaultProperties.fontWeight !== 'bold'
+                'fill-gray-300': store.selectedElement?.defaultProperties.fontWeight !== 'bold'
               }"
             />
           </button>
@@ -189,7 +190,7 @@ const clearSelectedElement = () => {
               :class="{
                 'fill-gray-950':
                   store.selectedElement?.defaultProperties.textDecoration === 'underline',
-                'fill-gray-400':
+                'fill-gray-300':
                   store.selectedElement?.defaultProperties.textDecoration !== 'underline'
               }"
             />
@@ -211,7 +212,7 @@ const clearSelectedElement = () => {
               }"
               :class="{
                 'fill-gray-950': store.selectedElement?.defaultProperties.fontStyle === 'italic',
-                'fill-gray-400': store.selectedElement?.defaultProperties.fontStyle !== 'italic'
+                'fill-gray-300': store.selectedElement?.defaultProperties.fontStyle !== 'italic'
               }"
             />
           </button>
@@ -234,12 +235,44 @@ const clearSelectedElement = () => {
               :class="{
                 'fill-gray-950':
                   store.selectedElement?.defaultProperties.textAlign === align.alignment,
-                'fill-gray-400':
+                'fill-gray-300':
                   store.selectedElement?.defaultProperties.textAlign !== align.alignment
               }"
             />
           </button>
         </div>
+        <span class="text-gray-400 text-xs -mb-2">Link</span>
+        <input
+          :value="selectedElement.defaultProperties.link"
+          @input="updateProperties('link', ($event.target as HTMLInputElement)?.value)"
+          class="w-full h-10 text-sm p-1.5 focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded placeholder-gray-300 placeholder:font-light"
+          placeholder="https://"
+        />
+        <span class="text-gray-400 text-xs -mb-2">View</span>
+        <DropDown
+          :value="viewType(selectedElement.defaultProperties.view)"
+          @update:value="updateProperties('font', $event)"
+          trigger-class-name="h-10 border-gray-200 border w-full flex justify-between items-center px-3 rounded text-sm"
+          :close-when-click-content="true"
+        >
+          <template #trigger
+            ><span> {{ viewType(store.selectedElement?.defaultProperties.view) }}</span>
+            <IconArrowDown />
+          </template>
+          <template #content>
+            <div class="flex flex-col w-full bg-white rounded-md border-main shadow-base divide-y">
+              <button
+                v-for="(view, index) in ['desktop', 'mobile', 'responsive']"
+                :key="index"
+                :value="view"
+                @click="updateProperties('view', view)"
+                class="text-center py-1 hover:bg-gray-50"
+              >
+                {{ viewType(view) }}
+              </button>
+            </div>
+          </template>
+        </DropDown>
       </div>
       <!-- Button Properties -->
       <div v-else-if="selectedElement.type === 'Button'" class="flex flex-col gap-4 px-5 py-3">
@@ -283,7 +316,7 @@ const clearSelectedElement = () => {
         <input
           :value="selectedElement.defaultProperties.text"
           @input="updateProperties('text', ($event.target as HTMLInputElement)?.value)"
-          class="w-full h-10 text-sm p-1.5 placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded placeholder-gray-400 placeholder:italic placeholder:font-light"
+          class="w-full h-10 text-sm p-1.5 focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded placeholder-gray-300 placeholder:italic placeholder:font-light"
           placeholder="Text Here"
         />
       </div>
@@ -301,7 +334,7 @@ const clearSelectedElement = () => {
 
       <!-- Block Properties -->
       <div v-else-if="selectedElement.type === 'Block'" class="flex flex-col gap-4 px-5 py-3">
-        <span class="text-gray-400 text-xs">Block Style</span>
+        <span class="text-gray-400 text-xs -mb-2">Block Style</span>
         <div class="flex flex-col gap-2.5">
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5"
@@ -338,7 +371,7 @@ const clearSelectedElement = () => {
           </button>
         </div>
 
-        <span class="text-gray-400 text-xs">Padding</span>
+        <span class="text-gray-400 text-xs -mb-2">Padding</span>
         <div class="flex gap-1.5">
           <span class="relative flex items-center justify-center border rounded w-full h-10">
             <span class="absolute -left-[1px] border-l h-7 border-gray-950 rounded"></span>
@@ -397,7 +430,7 @@ const clearSelectedElement = () => {
             <span class="text-xs text-gray-300">px.</span>
           </span>
         </div>
-        <span class="text-gray-400 text-xs">Margin</span>
+        <span class="text-gray-400 text-xs -mb-2">Margin</span>
         <div class="flex gap-1.5">
           <span class="relative flex items-center justify-center border rounded w-full h-10">
             <span class="absolute -left-[1px] border-l h-7 border-gray-950 rounded"></span>

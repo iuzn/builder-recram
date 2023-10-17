@@ -32,6 +32,8 @@ export const useElementsStore = defineStore('elements', {
         defaultProperties: {
           text: '',
           placeholder: 'Text Here',
+          link: '',
+          view: 'responsive',
           font: 'Rubik',
           fontSize: '16px',
           type: 'p',

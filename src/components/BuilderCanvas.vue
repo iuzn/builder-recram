@@ -155,7 +155,7 @@ function onInput(event: Event, elementId: string) {
           <div
             v-for="(_, index) in Array.from({ length: element.defaultProperties.children })"
             :key="index"
-            class="border w-full h-full"
+            class="border w-full h-full min-h-[120px]"
             :class="{
               'border-[#81CAFF] border-dashed': store.selectedElement?.id === element.id
             }"
