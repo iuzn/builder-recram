@@ -145,12 +145,11 @@ function onInput(event: Event, elementId: string) {
             marginLeft: element.defaultProperties.marginLeft,
             marginRight: element.defaultProperties.marginRight,
             marginTop: element.defaultProperties.marginTop,
-            marginBottom: element.defaultProperties.marginBottom
+            marginBottom: element.defaultProperties.marginBottom,
+            borderColor: store.selectedElement?.id === element.id ? '#81CAFF' : 'transparent',
+            borderStyle: store.selectedElement?.id === element.id ? 'dashed' : 'none'
           }"
-          :class="{
-            'border-[#81CAFF] border-dashed': store.selectedElement?.id === element.id
-          }"
-          class="flex w-full h-full gap-3 justify-center items-center border border-transparent"
+          class="flex w-full h-full gap-3 justify-center items-center border"
         >
           <div
             v-for="(_, index) in Array.from({ length: element.defaultProperties.children })"
