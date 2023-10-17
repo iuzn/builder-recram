@@ -95,7 +95,7 @@ function onInput(event: Event, elementId: string) {
         @dragover="dragOver($event, index)"
         @dragend="dragEnd"
         draggable="true"
-        class="w-full flex items-start justify-center"
+        class="w-full flex items-start justify-center gap-1"
         :class="element.type === 'Block' ? 'h-full' : ''"
       >
         <span
@@ -112,7 +112,7 @@ function onInput(event: Event, elementId: string) {
             'Text Here'
           "
           @input="onInput($event, element.id)"
-          class="w-full h-auto decoration-none text-sm p-1.5 rounded-md"
+          class="w-full h-auto min-h-[120px] decoration-none text-sm p-1.5 rounded-md"
           :class="{
             'ring-1 ring-gray-200': store.selectedElement?.id === element.id,
             'italic font-light text-gray-300': element.defaultProperties.text === ''
@@ -149,12 +149,18 @@ function onInput(event: Event, elementId: string) {
             marginTop: element.defaultProperties.marginTop,
             marginBottom: element.defaultProperties.marginBottom
           }"
-          class="flex w-full h-full gap-3 justify-center items-center"
+          class="flex w-full h-full gap-3 justify-center items-center border border-transparent"
+          :class="{
+            ' border-[#81CAFF] border-dashed': store.selectedElement?.id === element.id
+          }"
         >
           <div
             v-for="(_, index) in Array.from({ length: element.defaultProperties.children })"
             :key="index"
             class="border w-full h-full"
+            :class="{
+              'border-[#81CAFF] border-dashed': store.selectedElement?.id === element.id
+            }"
           ></div>
         </div>
       </div>

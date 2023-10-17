@@ -94,7 +94,6 @@ const clearSelectedElement = () => {
                 @click="updateProperties('type', type)"
                 class="text-center py-1 hover:bg-gray-50"
               >
-                <!-- Converts 'h1' to 'Heading 1', 'p' to 'Paragraph' -->
                 {{ type.replace(/^h/, 'Heading ').replace(/^p$/, 'Paragraph') }}
               </button>
             </div>
@@ -243,26 +242,50 @@ const clearSelectedElement = () => {
         </div>
       </div>
       <!-- Button Properties -->
-      <div v-else-if="selectedElement.type === 'Button'" class="flex flex-col gap-4">
-        <label>
-          Text:
-          <input
-            :value="selectedElement.defaultProperties.text"
-            @input="updateProperties('text', ($event.target as HTMLInputElement)?.value)"
-          />
-        </label>
-        <label>
-          Action:
-          <select
-            :value="selectedElement.defaultProperties.action"
-            @input="updateProperties('action', ($event.target as HTMLInputElement)?.value)"
-          >
-            <option>None</option>
-            <option v-for="(page, index) in store.pages" :key="index" :value="page.name">
-              {{ page.name }}
-            </option>
-          </select>
-        </label>
+      <div v-else-if="selectedElement.type === 'Button'" class="flex flex-col gap-4 px-5 py-3">
+        <DropDown
+          :value="selectedElement.defaultProperties.action"
+          @update:value="updateProperties('action', $event)"
+          trigger-class-name="h-10 border-gray-200 border w-full flex justify-between items-center px-3 rounded text-sm"
+          :close-when-click-content="true"
+        >
+          <template #trigger
+            ><span>
+              {{
+                store.selectedElement?.defaultProperties.action === ''
+                  ? 'Redirect to Next Page'
+                  : store.selectedElement?.defaultProperties.action
+              }}</span
+            >
+            <IconArrowDown />
+          </template>
+          <template #content>
+            <div class="flex flex-col w-full bg-white rounded-md border-main shadow-base divide-y">
+              <button
+                :value="''"
+                @click="updateProperties('action', '')"
+                class="text-center py-1 hover:bg-gray-50"
+              >
+                Redirect to Next Page
+              </button>
+              <button
+                v-for="(page, index) in store.pages"
+                :key="index"
+                :value="page.name"
+                @click="updateProperties('action', page.name)"
+                class="text-center py-1 hover:bg-gray-50"
+              >
+                {{ page.name }}
+              </button>
+            </div>
+          </template>
+        </DropDown>
+        <input
+          :value="selectedElement.defaultProperties.text"
+          @input="updateProperties('text', ($event.target as HTMLInputElement)?.value)"
+          class="w-full h-10 text-sm p-1.5 placeholder:font-light focus:outline-none focus:ring-0 focus:border-gray-200 border resize-none rounded placeholder-gray-400 placeholder:italic placeholder:font-light"
+          placeholder="Text Here"
+        />
       </div>
 
       <!-- Input Properties -->
@@ -283,8 +306,9 @@ const clearSelectedElement = () => {
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5"
             @click="updateProperties('children', 1)"
-            :class="{
-              'bg-blue-100': selectedElement.defaultProperties.children === 1
+            :style="{
+              backgroundColor:
+                selectedElement.defaultProperties.children === 1 ? '#E5EDF9' : 'white'
             }"
           >
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
@@ -292,8 +316,9 @@ const clearSelectedElement = () => {
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5 gap-3.5"
             @click="updateProperties('children', 2)"
-            :class="{
-              'bg-blue-100': selectedElement.defaultProperties.children === 2
+            :style="{
+              backgroundColor:
+                selectedElement.defaultProperties.children === 2 ? '#E5EDF9' : 'white'
             }"
           >
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>
@@ -302,8 +327,9 @@ const clearSelectedElement = () => {
           <button
             class="w-full h-[60px] bg-gray-50 border border-gray-200 rounded flex items-center p-3.5 gap-3.5"
             @click="updateProperties('children', 3)"
-            :class="{
-              'bg-blue-100': selectedElement.defaultProperties.children === 3
+            :style="{
+              backgroundColor:
+                selectedElement.defaultProperties.children === 3 ? '#E5EDF9' : 'white'
             }"
           >
             <span class="w-full h-8 bg-white border border-dashed border-gray-200 rounded"></span>

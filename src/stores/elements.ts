@@ -45,6 +45,7 @@ export const useElementsStore = defineStore('elements', {
         type: 'Button',
         icon: 'button',
         defaultProperties: {
+          action: 'Redirect to Next Page',
           text: 'Button',
           fontSize: '16px',
           backgroundColor: '#008AFF',
@@ -68,10 +69,10 @@ export const useElementsStore = defineStore('elements', {
           paddingTop: '10px',
           paddingRight: '10px',
           paddingBottom: '10px',
-          marginLeft: '10px',
-          marginTop: '10px',
-          marginRight: '10px',
-          marginBottom: '10px'
+          marginLeft: '0px',
+          marginTop: '0px',
+          marginRight: '0px',
+          marginBottom: '0px'
         }
       }
     ],
