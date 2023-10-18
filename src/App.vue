@@ -15,7 +15,7 @@ favicon.href = '/favicon.ico'
     <TopBar />
     <div class="flex">
       <SideBar />
-      <div class="flex flex-col h-[calc(100vh-66px)] min-h-full w-full">
+      <div class="flex flex-col h-[calc(100vh-66px)] min-h-full w-full overflow-hidden">
         <BuilderCanvas />
         <PageTabs />
       </div>

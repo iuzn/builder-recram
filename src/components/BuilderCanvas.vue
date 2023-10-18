@@ -80,7 +80,7 @@ function onInput(event: Event, elementId: string) {
       <button><IconMobile /></button>
     </div>
     <div
-      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start justify-start p-7 gap-3 overflow-y-scroll"
+      class="w-[680px] h-[460px] bg-white rounded-lg flex flex-col items-start justify-start p-7 gap-3 overflow-y-scroll z-10"
       @drop="drop"
       @dragover="allowDrop"
       id="canvas"
@@ -162,5 +162,9 @@ function onInput(event: Event, elementId: string) {
         </div>
       </div>
     </div>
+    <div
+      class="absolute top-0 bottom-0 left-0 right-0 z-0 w-full h-full"
+      @click="store.selectElement(null)"
+    ></div>
   </div>
 </template>

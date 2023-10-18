@@ -70,9 +70,9 @@ const copyToClipboard = async (textToCopy: string): Promise<void> => {
 </script>
 
 <template>
-  <div class="bg-white flex p-6 gap-5">
+  <div class="w-full min-h-[168px] bg-white flex p-6 gap-5 overflow-hidden overflow-x-visible">
     <div
-      class="group flex w-36 h-32 items-center justify-center text-gray-300 border-gray-200 border border-dashed relative rounded-md cursor-pointer"
+      class="group flex w-36 min-w-[132px] h-32 items-center justify-center text-gray-300 border-gray-200 border border-dashed relative rounded-md cursor-pointer"
       :class="{
         'p-[1px] bg-gradient-to-tr from-[#46BDC5] to-[#5EDE99] border-none shadow-base':
           store.currentPage?.name === page.name
@@ -119,7 +119,7 @@ const copyToClipboard = async (textToCopy: string): Promise<void> => {
     </div>
 
     <button
-      class="flex flex-col w-36 h-32 items-center justify-center gap-2 text-gray-300 border-gray-200 border border-dashed rounded-md"
+      class="flex flex-col w-36 min-w-[132px] h-32 items-center justify-center gap-2 text-gray-300 border-gray-200 border border-dashed rounded-md"
       @click="addPage"
     >
       <IconPlusCircle />
