@@ -10,13 +10,19 @@ const store = useElementsStore()
 function allowDrop(event: DragEvent) {
   event.preventDefault()
 }
+let dropIndex: number | null = null
 
 function drop(event: DragEvent) {
   event.preventDefault()
   const elementData = event.dataTransfer?.getData('application/json')
   if (elementData) {
     const element = JSON.parse(elementData)
-    store.addElementToCanvas(element)
+    if (dropIndex !== null) {
+      store.insertElementToCanvas(element, dropIndex) // Use the new store action
+      dropIndex = null // Reset dropIndex
+    } else {
+      store.addElementToCanvas(element)
+    }
     store.selectedElement = element
 
     if (store.currentPage) {
@@ -45,6 +51,7 @@ function dragStart(index: number) {
 
 function dragOver(event: DragEvent, index: number) {
   event.preventDefault()
+  dropIndex = index // Update dropIndex
   if (draggedElement === null) return
   if (draggedElement === index) return
   if (store.currentPage) {
@@ -59,6 +66,7 @@ function dragOver(event: DragEvent, index: number) {
 
 function dragEnd() {
   draggedElement = null
+  dropIndex = null
 }
 
 function onInput(event: Event, elementId: string) {

@@ -103,7 +103,7 @@ export const useElementsStore = defineStore('elements', {
       if (pageIndex > -1) {
         this.currentPage = this.pages[pageIndex]
         this.canvasElements = this.currentPage.elements || []
-        this.selectedElement = null // Add this line
+        this.selectedElement = null
       } else {
         this.currentPage = null
       }
@@ -112,6 +112,14 @@ export const useElementsStore = defineStore('elements', {
       const newElement = { ...element, id: uuidv4() }
       this.canvasElements.push(newElement)
       // Update currentPage's elements after adding new element
+      if (this.currentPage) {
+        this.currentPage.elements = [...this.canvasElements]
+        this.updatePage(this.currentPage)
+      }
+    },
+    insertElementToCanvas(element: Element, index: number) {
+      const newElement = { ...element, id: uuidv4() }
+      this.canvasElements.splice(index, 0, newElement)
       if (this.currentPage) {
         this.currentPage.elements = [...this.canvasElements]
         this.updatePage(this.currentPage)
